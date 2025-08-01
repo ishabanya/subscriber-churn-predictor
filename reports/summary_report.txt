@@ -1,0 +1,30 @@
+SUBSCRIBER CHURN PREDICTION - SUMMARY REPORT
+==================================================
+
+Report generated: 2025-08-01 17:50:29
+
+KEY METRICS:
+---------------
+Total Subscribers: 500
+Historical Churn Rate: 23.20%
+Average Monthly Revenue: $71.18
+Average Engagement Score: 22.68
+
+RISK ASSESSMENT:
+------------------
+High Risk (≥70%): 72 subscribers
+Medium Risk (40-70%): 41 subscribers
+Low Risk (<40%): 387 subscribers
+
+PLAN DISTRIBUTION:
+--------------------
+Basic: 258 subscribers (51.6%)
+Premium: 171 subscribers (34.2%)
+Enterprise: 71 subscribers (14.2%)
+
+LOCATION DISTRIBUTION:
+----------------------
+Other: 141 subscribers (28.2%)
+EU: 127 subscribers (25.4%)
+Asia: 116 subscribers (23.2%)
+US: 116 subscribers (23.2%)
