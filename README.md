@@ -1,187 +1,218 @@
-# Subscriber Churn Prediction Pipeline
+# 📊 Subscriber Churn Prediction Pipeline
 
-A comprehensive analytics pipeline for predicting subscriber churn using machine learning and interactive dashboards.
+A comprehensive machine learning pipeline for predicting subscriber churn with an interactive analytics dashboard. Built with Python, featuring advanced feature engineering, multiple ML models, and real-time visualizations.
 
-## Overview
+[![Streamlit App](https://img.shields.io/badge/Streamlit-App-blue?logo=streamlit)](https://subscriber-churn-predictor.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-This project implements an end-to-end solution for subscriber churn prediction, featuring:
+## 🚀 Live Demo
 
-- Data generation and preprocessing
-- Feature engineering with 25+ derived features
-- Multiple ML models (Random Forest, Gradient Boosting, Logistic Regression)
-- Interactive dashboard with Plotly/Dash
-- SQLite database for data storage
-- CSV exports for BI tools
+**🌐 [Access the Interactive Dashboard](https://subscriber-churn-predictor.streamlit.app/)**
 
-## Features
+Experience the full analytics dashboard with real-time data generation, interactive visualizations, and churn predictions.
 
-### Data Processing
-- Realistic subscriber data generation
-- Comprehensive feature engineering
-- Data validation and cleaning
+## ✨ Features
 
-### Machine Learning
-- Multiple algorithm comparison
-- Cross-validation and performance metrics
-- Feature importance analysis
-- Model persistence
+### 🔍 **Advanced Analytics**
+- **Real-time Churn Prediction**: ML models with 78% accuracy
+- **Feature Engineering**: 29 engineered features from raw subscriber data
+- **Risk Scoring**: Identify high-risk subscribers automatically
+- **Performance Metrics**: AUC, accuracy, and cross-validation scores
 
-### Visualization
-- Interactive dashboard with filters
-- Real-time metrics and charts
-- Risk assessment visualizations
-- Export capabilities
+### 📈 **Interactive Dashboard**
+- **Live Visualizations**: Churn distribution, revenue analysis, risk factors
+- **Dynamic Filtering**: Filter by plan, location, and risk threshold
+- **Real-time Metrics**: Key performance indicators and trends
+- **Data Export**: Download high-risk subscribers as CSV
 
-## Installation
+### 🤖 **Machine Learning Models**
+- **Random Forest**: Best performing model (AUC: 0.737)
+- **Gradient Boosting**: Alternative ensemble method
+- **Logistic Regression**: Interpretable baseline model
+- **Cross-validation**: Robust performance evaluation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/ishabanya/subscriber-churn-predictor.git
-cd subscriber-churn-predictor
-```
+### 🛠️ **Technical Stack**
+- **Python**: Core programming language
+- **Pandas & NumPy**: Data manipulation and analysis
+- **Scikit-learn**: Machine learning algorithms
+- **Streamlit**: Interactive web application
+- **Plotly**: Interactive visualizations
+- **SQLite**: Lightweight database storage
 
-2. Create virtual environment:
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-### Quick Start
-Run the complete pipeline:
-```bash
-python main_pipeline.py
-```
-
-This will:
-- Generate sample subscriber data
-- Create engineered features
-- Train ML models
-- Generate predictions
-- Launch the dashboard
-
-### Custom Configuration
-```bash
-# Generate data only
-python main_pipeline.py --generate-data
-
-# Train model with custom parameters
-python main_pipeline.py --subscribers 1000 --days 365
-
-# Launch dashboard only
-python main_pipeline.py --launch-dashboard
-```
-
-### Dashboard Access
-After running the pipeline, access the dashboard at:
-```
-http://127.0.0.1:8050
-```
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 subscriber-churn-predictor/
-├── data_generator.py          # Sample data generation
-├── feature_engineering.py     # Feature engineering pipeline
-├── churn_model.py            # ML model training
-├── dashboard.py              # Interactive dashboard
-├── main_pipeline.py          # Main orchestration
-├── requirements.txt          # Dependencies
-├── README.md                 # This file
-├── data/                     # Generated data
-├── models/                   # Trained models
-├── reports/                  # Analysis reports
-└── exports/                  # BI-ready exports
+├── 📁 data/                    # Generated sample data
+├── 📁 models/                  # Trained ML models
+├── 📁 reports/                 # Performance reports
+├── 📁 exports/                 # Data exports for BI tools
+├── 📄 streamlit_app.py         # Main Streamlit dashboard
+├── 📄 main_pipeline.py         # End-to-end pipeline orchestration
+├── 📄 data_generator.py        # Synthetic data generation
+├── 📄 feature_engineering.py   # Feature creation and preprocessing
+├── 📄 churn_model.py          # ML model training and evaluation
+├── 📄 setup_streamlit.py      # Streamlit deployment setup
+├── 📄 requirements.txt         # Python dependencies
+└── 📄 requirements-streamlit.txt # Streamlit-specific dependencies
 ```
 
-## Model Performance
+## 🚀 Quick Start
 
-The pipeline evaluates multiple algorithms:
+### Option 1: Use the Live Dashboard
+1. Visit [https://subscriber-churn-predictor.streamlit.app/](https://subscriber-churn-predictor.streamlit.app/)
+2. The app will automatically generate sample data
+3. Explore the interactive visualizations and analytics
 
-- **Random Forest**: AUC 0.737 (Best performing)
-- **Gradient Boosting**: AUC 0.684
-- **Logistic Regression**: AUC 0.645
+### Option 2: Run Locally
 
-## Generated Features
+```bash
+# Clone the repository
+git clone https://github.com/ishabanya/subscriber-churn-predictor.git
+cd subscriber-churn-predictor
 
-The pipeline creates 25+ engineered features including:
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-- Usage patterns (sessions, duration, frequency)
-- Revenue metrics (volatility, trends, per-session)
-- Engagement scores (composite metrics)
-- Risk assessments (support, payments, trends)
-- Value scoring (revenue + engagement)
+# Install dependencies
+pip install -r requirements-streamlit.txt
 
-## Dashboard Features
+# Run the Streamlit app
+streamlit run streamlit_app.py
+```
 
-- Key metrics cards (subscribers, churn rate, revenue, risk)
-- Interactive filters (plan, location, risk threshold)
-- Churn distribution visualizations
-- Risk score analysis
-- Engagement vs risk scatter plots
-- Revenue analysis by plan
-- Support ticket correlations
-- High-risk subscriber table
+### Option 3: Full Pipeline
 
-## Data Export
+```bash
+# Run the complete pipeline
+python main_pipeline.py --subscribers 1000 --days 365
 
-The pipeline generates several export files:
+# Or run individual components
+python setup_streamlit.py  # Generate sample data
+python main_pipeline.py --train-model  # Train models only
+```
 
-- `exports/full_subscriber_analytics.csv` - Complete dataset for BI tools
-- `exports/high_risk_subscribers.csv` - Subscribers with high churn probability
-- `reports/model_report.txt` - Detailed model performance
-- `reports/summary_report.txt` - Business summary
+## 📊 Dashboard Features
 
-## Customization
+### **Key Metrics**
+- Total subscribers and churn rate
+- Average monthly revenue
+- High-risk subscriber count
+- Model performance indicators
 
-### Using Your Own Data
-1. Replace `data/subscriber_data.csv` with your data
-2. Ensure required columns are present
-3. Run the pipeline with `--train-model --launch-dashboard`
+### **Interactive Visualizations**
+- **Churn Distribution**: By subscription plan
+- **Risk Score Analysis**: Probability distribution
+- **Revenue Analysis**: By plan with error bars
+- **Support vs Churn**: Correlation analysis
+- **Engagement vs Risk**: Scatter plot analysis
+- **Top Risk Factors**: Feature importance ranking
 
-### Model Tuning
-- Modify hyperparameters in `churn_model.py`
-- Add new algorithms to the pipeline
-- Adjust feature selection as needed
+### **Data Controls**
+- **Plan Filter**: Filter by subscription tier
+- **Location Filter**: Geographic segmentation
+- **Risk Threshold**: Adjustable risk classification
+- **Refresh Data**: Regenerate sample data
+- **Export Functionality**: Download high-risk subscribers
 
-### Dashboard Customization
-- Add new visualizations in `dashboard.py`
-- Modify filters and metrics
-- Customize styling and layout
+## 🔧 Model Performance
 
-## Requirements
+| Model | Accuracy | AUC Score | Cross-Validation AUC |
+|-------|----------|-----------|---------------------|
+| **Random Forest** | 78.0% | 0.737 | 0.721 ± 0.099 |
+| Gradient Boosting | 79.0% | 0.684 | 0.712 ± 0.027 |
+| Logistic Regression | 78.0% | 0.645 | 0.689 ± 0.106 |
 
-- Python 3.8+
-- pandas >= 2.2.0
-- scikit-learn >= 1.4.0
-- plotly >= 5.18.0
-- dash >= 2.16.0
-- numpy >= 1.26.0
-- matplotlib >= 3.8.0
-- seaborn >= 0.13.0
+## 📈 Generated Features
 
-## License
+The pipeline creates 29 engineered features including:
 
-This project is open source and available under the MIT License.
+### **Behavioral Features**
+- Engagement score and session frequency
+- Feature usage patterns
+- Support ticket history
+- Payment behavior metrics
 
-## Contributing
+### **Temporal Features**
+- Subscription duration
+- Recent activity patterns
+- Seasonal trends
+- Usage volatility
+
+### **Business Features**
+- Revenue metrics and trends
+- Plan-specific indicators
+- Geographic factors
+- Risk scoring algorithms
+
+## 🚀 Deployment Options
+
+### **Streamlit Cloud** (Recommended)
+- Free hosting with automatic deployment
+- GitHub integration
+- Custom domain support
+- Built-in caching and performance optimization
+
+### **Heroku**
+```bash
+# Create Procfile
+echo "web: streamlit run streamlit_app.py --server.port=\$PORT --server.address=0.0.0.0" > Procfile
+
+# Deploy
+heroku create your-app-name
+git push heroku main
+```
+
+### **Railway**
+- Connect GitHub repository
+- Automatic deployment on push
+- Built-in environment management
+
+### **Render**
+- Web service deployment
+- Automatic HTTPS
+- Custom domain support
+
+## 📋 Requirements
+
+- **Python**: 3.8 or higher
+- **Memory**: 2GB RAM minimum
+- **Storage**: 100MB for sample data and models
+- **Browser**: Modern web browser for dashboard
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Support
+## 📝 License
 
-For questions or issues:
-1. Check the troubleshooting section in the code
-2. Review the generated reports
-3. Open an issue on GitHub 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Streamlit** for the amazing web app framework
+- **Scikit-learn** for robust machine learning algorithms
+- **Plotly** for beautiful interactive visualizations
+- **Pandas** for powerful data manipulation
+
+## 📞 Support
+
+- **Live Demo**: [https://subscriber-churn-predictor.streamlit.app/](https://subscriber-churn-predictor.streamlit.app/)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/ishabanya/subscriber-churn-predictor/issues)
+- **Documentation**: Check the code comments and docstrings
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you find it helpful!**
+
+Made with ❤️ by [Ishabanya](https://github.com/ishabanya)
+
+</div> 
