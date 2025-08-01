@@ -48,6 +48,16 @@ class StreamlitDashboard:
         try:
             conn = sqlite3.connect(self.db_path)
             
+            # Check if tables exist
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='subscriber_features'")
+            table_exists = cursor.fetchone() is not None
+            
+            if not table_exists:
+                st.info("No data found. Generating sample data...")
+                conn.close()
+                return self.generate_sample_data()
+            
             # Load subscriber features
             features_df = pd.read_sql("SELECT * FROM subscriber_features", conn)
             
@@ -57,30 +67,103 @@ class StreamlitDashboard:
                 # Merge predictions with features
                 features_df = features_df.merge(predictions_df, on='subscriber_id', how='left')
             except:
-                st.warning("No predictions found. Please run the pipeline first.")
+                st.warning("No predictions found. Generating predictions...")
+                features_df = self.generate_predictions(features_df)
             
             conn.close()
             return features_df
         except Exception as e:
             st.error(f"Error loading data: {e}")
             return pd.DataFrame()
+    
+    def generate_sample_data(self):
+        """Generate sample data if none exists."""
+        try:
+            from data_generator import generate_subscriber_data
+            from feature_engineering import FeatureEngineer
+            from churn_model import ChurnPredictor
+            
+            # Generate sample data
+            with st.spinner("Generating sample subscriber data..."):
+                df = generate_subscriber_data(n_subscribers=500, days_history=180)
+            
+            # Feature engineering
+            with st.spinner("Creating features..."):
+                feature_engineer = FeatureEngineer()
+                features_df = feature_engineer.create_features(df)
+                feature_engineer.save_to_database(features_df)
+            
+            # Generate predictions
+            features_df = self.generate_predictions(features_df)
+            
+            st.success("Sample data generated successfully!")
+            return features_df
+            
+        except Exception as e:
+            st.error(f"Error generating sample data: {e}")
+            return pd.DataFrame()
+    
+    def generate_predictions(self, features_df):
+        """Generate predictions for the features."""
+        try:
+            from feature_engineering import FeatureEngineer
+            from churn_model import ChurnPredictor
+            
+            # Prepare model data
+            feature_engineer = FeatureEngineer()
+            X, y, feature_names = feature_engineer.prepare_model_data(features_df)
+            
+            # Train models and generate predictions
+            predictor = ChurnPredictor()
+            best_model = predictor.train_models(X, y, feature_names)
+            predictions, probabilities = predictor.predict_churn(X)
+            
+            # Save predictions to database
+            predictor.save_predictions_to_db(
+                features_df['subscriber_id'], 
+                predictions, 
+                probabilities
+            )
+            
+            # Merge predictions with features
+            predictions_df = pd.DataFrame({
+                'subscriber_id': features_df['subscriber_id'],
+                'churn_probability': probabilities
+            })
+            
+            return features_df.merge(predictions_df, on='subscriber_id', how='left')
+            
+        except Exception as e:
+            st.error(f"Error generating predictions: {e}")
+            return features_df
+
+@st.cache_data(ttl=3600)  # Cache for 1 hour
+def load_cached_data():
+    """Load data with caching to avoid regenerating on every refresh."""
+    dashboard = StreamlitDashboard()
+    return dashboard.load_data()
 
 def main():
     # Header
     st.markdown('<h1 class="main-header">📊 Subscriber Churn Analytics Dashboard</h1>', unsafe_allow_html=True)
     
-    # Initialize dashboard
-    dashboard = StreamlitDashboard()
-    
-    # Load data
-    df = dashboard.load_data()
+    # Load data with caching
+    df = load_cached_data()
     
     if df.empty:
         st.error("No data available. Please run the pipeline first to generate data.")
         st.info("Run: `python main_pipeline.py` to generate sample data and train models.")
         return
     
-    # Sidebar filters
+    # Sidebar controls
+    st.sidebar.header("Controls")
+    
+    # Refresh button
+    if st.sidebar.button("🔄 Refresh Data", help="Regenerate sample data and predictions"):
+        st.cache_data.clear()
+        st.rerun()
+    
+    st.sidebar.markdown("---")
     st.sidebar.header("Filters")
     
     # Plan filter
